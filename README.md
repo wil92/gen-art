@@ -2,6 +2,8 @@
 
 A little project to investigate and create my first generative art pictures
 
+All the images generated in this project and the explication of how to generate them (seed, and git commit), are saved and described in this file. [IMAGES](./IMAGES.md)
+
 ## Develop mode
 
 You can start the project in develop with the command `npm start`. This has live reloading after any change in the code.
