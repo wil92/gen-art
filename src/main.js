@@ -6,7 +6,7 @@ console.log("My generative art.");
 
 // images
 // const image = new Image1(200, 200);
-const image = new Image2(1920, 1080);
+const image = new Image2(400, 400);
 
 Animation.getInstance()
   .setImageToPaint(image)

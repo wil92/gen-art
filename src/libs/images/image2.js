@@ -1,4 +1,4 @@
-import {globalSeed} from "../global";
+import {FPS, globalSeed, LOOP_ANIMATION, setLoopAnimation} from "../global";
 import {getVector, map, randomIntNumber, rotateVector} from "../utils/functions";
 import Image from "./base-image";
 import PerlinNoise from "../utils/perlin-noise";
@@ -20,13 +20,28 @@ export class Image2 extends Image {
 
     /** @member {function} */
     this.rand = getRandBySeed(globalSeed);
+
+    this.nt = 0;
+
+    this.encoder = new GIFEncoder();
+    this.encoder.setRepeat(0);
+    this.encoder.setDelay(1000 / 20);
+    this.encoder.setQuality(1);
+    this.encoder.start();
+
+    this.time = 0;
   }
 
   /**
    * @param context {CanvasRenderingContext2D}
    */
   render(context) {
-    this.fillBackground(context);
+    this.time++;
+
+    if (!this.firstTime) {
+      this.fillBackground(context);
+    }
+    this.firstTime = true;
 
     // this.gout(this.width / 4, this.height / 4, context, 0.5);
     // this.gout(this.width / 4 * 3, this.height / 4, context, 0.5);
@@ -40,14 +55,32 @@ export class Image2 extends Image {
 
     colors = colors.map(color => `#${color}`)
 
-    for (let i = 0, nt = 0; i < 400; i++, nt += 0.55) {
-      // const xPos = this.width * this.noise(nt);
-      // const yPos = this.height * this.noise(nt + 10);
-      const xPos = this.width * this.rand();
-      const yPos = this.height * this.rand();
-      const color = this.reduceOpacity(colors[Math.floor(this.rand() * colors.length)], 245);
-      this.gout(xPos, yPos, context, map(this.noise(nt + 100), 0, 1, 0, 0.4), color);
-      // this.gout(this.width / 2, this.height / 2, context, 0.3, color);
+    // context.strokeStyle = "#D741A7";
+    // context.moveTo(this.width * this.noise(0), this.height * this.noise(10))
+    // for (let i = 0, nt = 0; i < 1000; i++, nt += 0.01) {
+    const xPos = this.width * this.noise(this.nt);
+    const yPos = this.height * this.noise(this.nt + 10);
+
+    this.nt += 0.5;
+
+    // context.lineTo(xPos, yPos);
+
+    // const xPos = this.width * this.rand();
+    // const yPos = this.height * this.rand();
+    const color = this.reduceOpacity(colors[Math.floor(this.rand() * colors.length)], 245);
+    this.gout(xPos, yPos, context, map(this.noise(this.nt + 100), 0, 1, 0.5, 0.7), color);
+    // this.gout(this.width / 2, this.height / 2, context, 0.3, color);
+    // }
+    // context.stroke();
+
+    if (this.time / FPS >= 2) {
+      setLoopAnimation(false);
+      this.encoder.finish();
+      context.canvas.onclick = () => {
+        this.encoder.download(`img-${globalSeed}.gif`);
+      }
+    } else {
+      this.encoder.addFrame(context);
     }
   }
 
