@@ -19,4 +19,14 @@
 
     Cool effect playing with colors.
 
-![perlin noise distribution](./images/img2.png)
+![wallpaper](./images/img2.png)
+
+# Colors to my canvas
+
+- **commit**: `54978af27b87c2289f64dbae5390cc4d01fec1f6`
+- **seed**: `1341416177755`
+- **Description**:
+
+    Playing around with gif animations.
+
+![colors to my canvas](./images/img-1341416177755.gif)
