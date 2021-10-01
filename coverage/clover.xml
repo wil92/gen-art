@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1633102197211" clover="3.2.0">
+  <project timestamp="1633102197211" name="All files">
+    <metrics statements="48" coveredstatements="46" conditionals="12" coveredconditionals="11" methods="4" coveredmethods="3" elements="64" coveredelements="60" complexity="0" loc="48" ncloc="48" packages="2" files="4" classes="4"/>
+    <package name="libs">
+      <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="global.js" path="/home/guille/WebstormProjects/perlin-noise/src/libs/global.js">
+        <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="libs.utils">
+      <metrics statements="40" coveredstatements="38" conditionals="11" coveredconditionals="11" methods="4" coveredmethods="3"/>
+      <file name="functions.js" path="/home/guille/WebstormProjects/perlin-noise/src/libs/utils/functions.js">
+        <metrics statements="16" coveredstatements="14" conditionals="7" coveredconditionals="7" methods="2" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="233" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="233" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="56" type="stmt"/>
+        <line num="9" count="56" type="stmt"/>
+        <line num="10" count="175" type="cond" truecount="1" falsecount="0"/>
+        <line num="11" count="233" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="233" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+      </file>
+      <file name="hash.js" path="/home/guille/WebstormProjects/perlin-noise/src/libs/utils/hash.js">
+        <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="58" type="stmt"/>
+        <line num="9" count="58" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+      </file>
+      <file name="random.js" path="/home/guille/WebstormProjects/perlin-noise/src/libs/utils/random.js">
+        <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
