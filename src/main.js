@@ -1,11 +1,13 @@
 import Animation from "./libs/animation";
 import {Image1} from "./libs/images/image1";
+import {Image2} from "./libs/images/image2";
 
 console.log("My generative art.");
 
 // images
-const image1 = new Image1(200, 200);
+// const image = new Image1(200, 200);
+const image = new Image2(1920, 1080);
 
 Animation.getInstance()
-  .setImageToPaint(image1)
+  .setImageToPaint(image)
   .start();
