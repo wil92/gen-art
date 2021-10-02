@@ -28,7 +28,13 @@ export function pow(a, b, m = globalMod) {
  * @return {number}
  */
 export function map(value, a, b, c, d) {
-  return (d - c) * value / (b - a) + c;
+  if (a > b) {
+    [a, b] = [b, a];
+  }
+  if (c > d) {
+    [c, d] = [d, c];
+  }
+  return Math.max(Math.min((d - c) * (value - a) / (b - a) + c, d), c);
 }
 
 /**
@@ -53,6 +59,7 @@ export function getVector(p1, p2) {
 }
 
 const randomIntNumberRand = getRandBySeed(globalSeed);
+
 /**
  * @param limit {number}
  * @param start {number}

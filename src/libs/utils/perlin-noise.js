@@ -2,38 +2,108 @@ import {globalSeed} from "../global";
 import {getRandBySeed} from "./random";
 import {map} from './functions';
 
-const noiseLevelDiff = 2;
-
 export default class PerlinNoise {
 
-  /**
-   * @param seed {string}
-   * @param level {number}
-   */
-  constructor(seed, level) {
-    level = level || 5;
-    this.levels = [...new Array(level)]
-      .fill(null)
-      .map((ignore, i) => Math.pow(noiseLevelDiff, -i));
-  }
-
-  /**
-   * @param seed
-   * @param level {number}
-   */
-  static getNoiseSeed(seed, level = 5) {
-    const noise = new PerlinNoise(seed, level);
+  static getNoiseSeed() {
+    const noise = new PerlinNoise();
     return noise.rand.bind(noise);
   }
 
   /**
    * @param time {number}
-   * @param size {number}
-   * @return {{r: number, l: number}}
+   * @param time2 {number}
+   * @param time3 {number}
+   * @return {number}
    */
-  getBorders(time, size) {
-    let l = Math.floor(time / size) * size;
-    return {l, r: l + size};
+  rand(time, time2 = undefined, time3 = undefined) {
+    if (time3 !== undefined) {
+      return this.rand3D(time, time2, time3);
+    }
+    if (time2 !== undefined) {
+      return this.rand2D(time, time2);
+    }
+    return this.rand2D(time, time);
+  }
+
+  /**
+   * @param x {number}
+   * @param y {number}
+   */
+  rand2D(x, y) {
+    const x0 = Math.floor(x), x1 = x0 + 1;
+    const y0 = Math.floor(y), y1 = y0 + 1;
+
+    const i1 = this.interpolate(
+      this.dotGridGradient(x0, y0, 0, x, y),
+      this.dotGridGradient(x1, y0, 0, x, y),
+      x - x0);
+
+    const i2 = this.interpolate(
+      this.dotGridGradient(x0, y1, 0, x, y),
+      this.dotGridGradient(x1, y1, 0, x, y),
+      x - x0);
+
+    return map(this.interpolate(i1, i2, y - y0), -.5, .5, 0, 1);
+  }
+
+  /**
+   * @param x {number}
+   * @param y {number}
+   * @param z {number}
+   */
+  rand3D(x, y, z) {
+    const x0 = Math.floor(x), x1 = x0 + 1;
+    const y0 = Math.floor(y), y1 = y0 + 1;
+    const z0 = Math.floor(z), z1 = z0 + 1;
+
+    const i1 = this.interpolate(
+      this.dotGridGradient(x0, y0, z0, x, y, z),
+      this.dotGridGradient(x1, y0, z0, x, y, z),
+      x - x0);
+
+    const i2 = this.interpolate(
+      this.dotGridGradient(x0, y1, z0, x, y, z),
+      this.dotGridGradient(x1, y1, z0, x, y, z),
+      x - x0);
+
+    const j1 = this.interpolate(i1, i2, y - y0)
+
+    const i3 = this.interpolate(
+      this.dotGridGradient(x0, y0, z1, x, y, z),
+      this.dotGridGradient(x1, y0, z1, x, y, z),
+      x - x0);
+
+    const i4 = this.interpolate(
+      this.dotGridGradient(x0, y1, z1, x, y, z),
+      this.dotGridGradient(x1, y1, z1, x, y, z),
+      x - x0);
+
+    const j2 = this.interpolate(i3, i4, y - y0)
+
+    return map(this.interpolate(j1, j2, z - z0), -.5, .5, 0, 1);
+  }
+
+  interpolate(a, b, w) {
+    return (b - a) * this.fade(w) + a;
+  }
+
+  /**
+   * @param t {number}
+   * @return {number}
+   */
+  fade(t) {
+    return ((6 * t - 15) * t + 10) * t * t * t;
+  }
+
+  dotGridGradient(x, y, z, x1, y1, z1 = 0) {
+    const grad = this.randomGradient(x, y, z);
+    return (grad.x * (x - x1)) + (grad.y * (y - y1) + (grad.z * (z - z1)));
+  }
+
+  randomGradient(x, y, z) {
+    const r = this.partialRand(globalSeed, x+y-z);
+    const a = Math.PI * 2 * r;
+    return {x: Math.cos(a), y: Math.sin(a), z: Math.cos(a * 2)};
   }
 
   /**
@@ -42,70 +112,6 @@ export default class PerlinNoise {
    * @return {function}
    */
   partialRand(globalSeed, localSeed) {
-    const r = getRandBySeed(globalSeed, localSeed);
-    const iterations = Math.floor(localSeed * 100) % 19 + 2;
-    return [...new Array(iterations)].fill(null).reduce(() => r());
-  }
-
-  /**
-   * @param time {number}
-   * @param real {number}
-   * @return {number}
-   */
-  evalTime(time, real= undefined) {
-    return real || this.partialRand(globalSeed, time);
-  }
-
-  /**
-   * @param t {number}
-   * @return {number}
-   */
-  fade(t) {
-    const t3 = t * t * t;
-    return 6 * t3 * t * t - 15 * t3 * t + 10 * t3 - t;
-  }
-
-  /**
-   * @param i {number}
-   * @param j {number}
-   * @param p {number}
-   * @param fi {number}
-   * @param fj {number}
-   * @return {number}
-   */
-  evalInterval(i, j, p, fi, fj) {
-    const m = (this.evalTime(j, fj) - this.evalTime(i, fi)) / (j - i);
-    const n = this.evalTime(j, fj) - m * j;
-    const f = this.fade(map(Math.abs(p - i), 0, Math.abs(j - i), 0, 1));
-    const d = Math.sqrt(Math.pow(j - i, 2) + Math.pow(fj - fi, 2));
-    return (m * p + n) + map(f, 0, 1, 0, d / 2);
-  }
-
-  /**
-   * @param time {number}
-   * @return {number}
-   */
-  rand(time) {
-    let borders = this.getBorders(time, this.levels[0]);
-    let left = borders.l, right = borders.r;
-    let vl = this.evalTime(left), vr = this.evalTime(right);
-
-    for (let i = 1; i < this.levels.length; i++) {
-      let {l, r} = this.getBorders(time, this.levels[i])
-
-      let tvl = vl, tvr = vr;
-      const w = 1 / Math.pow(2, i);
-      if (l !== left) {
-        tvl = this.evalInterval(left, right, l, vl, vr) + this.evalTime(l) * w - w / 2;
-        left = l;
-      }
-      if (r !== right) {
-        tvr = this.evalInterval(left, right, r, vl, vr) + this.evalTime(r) * w - w / 2;
-        right = r;
-      }
-      vl = Math.min(1, Math.max(0, tvl));
-      vr = Math.min(1, Math.max(0, tvr));
-    }
-    return Math.min(1, Math.max(0, this.evalInterval(left, right, time, vl, vr)));
+    return getRandBySeed(globalSeed, localSeed)();
   }
 }

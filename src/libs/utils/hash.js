@@ -1,11 +1,13 @@
 import {globalMod} from "../global";
-import {pow} from "./functions";
+
+const prime = 571;
 
 export function hash(value) {
-  const v = "N" + value;
-  let result = 0;
+  const v = "N@34" + value;
+  let result = 0, pot = 1;
   for (let i = 0; i < v.length; i++) {
-    result = (result + v.charCodeAt(i) * pow(571, i)) % globalMod;
+    result = (result + v.charCodeAt(i) * pot) % globalMod;
+    pot = (pot * prime) % globalMod;
   }
   return result;
 }

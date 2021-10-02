@@ -16,7 +16,7 @@ export class Image2 extends Image {
     this.currentPosition = 0;
 
     /** @member {function} */
-    this.noise = PerlinNoise.getNoiseSeed(globalSeed, 10);
+    this.noise = PerlinNoise.getNoiseSeed(globalSeed);
 
     /** @member {function} */
     this.rand = getRandBySeed(globalSeed);
